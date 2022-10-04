@@ -1,4 +1,3 @@
-import 'package:camerafilter/edit/filter_edit.dart';
 import 'package:camerafilter/second_screen.dart';
 import 'package:exif/exif.dart';
 import 'package:flutter/material.dart';
@@ -6,18 +5,10 @@ import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:camerafilter/filters.dart';
-import 'package:image_size_getter/file_input.dart';
 import 'dart:ui' as ui;
-import 'dart:convert';
 import 'dart:typed_data';
-import 'package:path_provider/path_provider.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:io';//　File
-import 'dart:typed_data'; // Uint8List
-import 'package:image_size_getter/image_size_getter.dart';
-
-
 import 'package:flutter/services.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -34,23 +25,20 @@ class _MyHomePageState extends State<MyHomePage> {
   final picker = ImagePicker();
   final GlobalKey _globalKey = GlobalKey();
   String imagePath = '';
-  final List<List<double>> filters = [SEPIA_MATRIX, GREYSCALE_MATRIX , VINTAGE_MATRIX, SWEET_MATRIX];
 
   dynamic pickedDate;
   dynamic pickedMake;
+  dynamic pickedMaker;
   dynamic pickedFocal;
   dynamic pickedF;
   dynamic pickedShutter;
   dynamic pickedISO;
   dynamic pickedLens;
+  dynamic pickedWidth;
+  dynamic pickedHeight;
 
-  var dateTime;
-  var dateMake;
-  var dateFocal;
-
-
-
-
+  get int_pickedWidth => int.parse(pickedWidth);
+  get int_pickedHeight => int.parse(pickedHeight);
 
   // void convertWidgetToImage() async {
   //   RenderObject? repaintBoundary = _globalKey.currentContext!.findRenderObject();
@@ -90,17 +78,21 @@ class _MyHomePageState extends State<MyHomePage> {
     final tags = await readExifFromBytes(await File(pickedFile!.path).readAsBytes());
     // final tags = await readExifFromBytes(await image!.readAsBytes());
     String dateTime = tags["Image DateTime"].toString();
+    String dateMaker = tags["Image Make"].toString();
     String dateMake = tags["Image Model"].toString();
     String dateFocal = tags["EXIF FocalLength"].toString();
     String dateF = tags["EXIF FNumber"].toString();
     String dateShutter = tags["EXIF ExposureTime"].toString();
     String dateISO = tags["EXIF ISOSpeedRatings"].toString();
     String dateLens = tags["EXIF LensModel"].toString();
+    String dateWidth = tags["EXIF ExifImageWidth"].toString();
+    String dateHeight = tags["EXIF ExifImageLength"].toString();
     setState(() {
-      if(pickedFile != null) {
+      if(pickedFile != null ) {
         image = File(pickedFile.path);
         image2 = File(pickedFile.path);
         // final Image =  File(pickedFile.path);
+        pickedMaker = dateMaker;
         pickedDate = dateTime;
         pickedMake = dateMake;
         pickedFocal = dateFocal;
@@ -108,6 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
         pickedShutter = dateShutter;
         pickedISO = dateISO;
         pickedLens = dateLens;
+        pickedWidth = dateWidth;
+        pickedHeight = dateHeight;
       }
     });
     // print('latitudeRef: ${tags['GPS GPSLatitudeRef']}');
@@ -120,13 +114,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   //保存
   Future saveImage() async {
     if (image2 != null) {
 
       final RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-      final ui.Image image = await boundary.toImage(pixelRatio: 5);
+      final ui.Image image = await boundary.toImage(pixelRatio: 10);
       final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       final Uint8List buffer = byteData!.buffer.asUint8List();
 
@@ -198,46 +191,65 @@ class _MyHomePageState extends State<MyHomePage> {
               // child: Expanded(flex:1,child: Image.file(image, fit: BoxFit.cover)),
             ),
             // SizedBox(height: 10,),
-            if (image != null) Expanded(
-              flex: 5,
+            if (image != null) Container(
+              color: Colors.transparent,
               child: RepaintBoundary(
                 key: _globalKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Expanded(
-                          flex: 1,
-                          child: Image.file(
-                              image2!,
-                              fit: BoxFit.scaleDown
+                child: AspectRatio(
+                  aspectRatio: 4 / 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                       // 画像の縦横判断でWidgetの変更
+                        if (int_pickedHeight > int_pickedWidth) Expanded(
+                         child: Container(
+                            child: Image.file(
+                                image2!,
+                                fit: BoxFit.scaleDown
+                            ),
+                          ),
+                       ) else Container(
+                          child: Center(
+                            child: Image.file(
+                                image2!,
+                                fit: BoxFit.contain
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      pickedDate == null ? Container(
-                        child: Text(""),
-                      ) : Text("$pickedDate"),
-                      pickedMake != null ? Container(
-                        child: Text("$pickedMake"),
-                      ) : Container(),
-                      pickedFocal == null ? Container(
-                        child: Text(""),
-                      ) : Text("$pickedFocal mm"),
-                      pickedShutter == null ? Container(
-                        child: Text(""),
-                      ) : Text("$pickedShutter"),
-                      pickedF == null ? Container(
-                        child: Text(""),
-                      ) : Text("f $pickedF"),
-                      pickedISO == null ? Container(
-                        child: Text(""),
-                      ) : Text("iso $pickedISO"),
-                      if (pickedLens.isEmpty) Container(
-                        child: Text(""),
-                      ) else Text("$pickedLens"),
-                    ],
+                        SizedBox(height: 10),
+                        pickedDate == null ? Container(
+                          child: Text(""),
+                        ) : Text("$pickedDate"),
+                        pickedMake != null ? Container(
+                          child: Text("$pickedMaker $pickedMake"),
+                        ) : Container(),
+
+                        if (pickedMaker == "SONY") Container(
+                          width: 70,
+                          child: Image.asset(
+                              'images/sony.png',
+                              fit: BoxFit.cover,
+                          ),
+                        ) else Container(),
+
+                        pickedFocal == null ? Container(
+                          child: Text(""),
+                        ) : Text("$pickedFocal mm"),
+                        pickedShutter == null ? Container(
+                          child: Text(""),
+                        ) : Text("$pickedShutter"),
+                        pickedF == null ? Container(
+                          child: Text(""),
+                        ) : Text("f $pickedF"),
+                        pickedISO == null ? Container(
+                          child: Text(""),
+                        ) : Text("iso $pickedISO"),
+                        if (pickedLens.isEmpty) Container(
+                          child: Text(""),
+                        ) else Text("$pickedLens"),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -255,21 +267,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-//
-// child: RepaintBoundary(
-// key: _globalKey,
-// child: Container(
-// constraints: BoxConstraints(
-// maxWidth: size.width,
-// maxHeight: size.width,
-// ),
-// child: PageView.builder(
-// itemCount: filters.length,
-// itemBuilder: (context, index) {
-// return ColorFiltered(
-// colorFilter: ColorFilter.matrix(filters[index]),
-// child: image,
-// );
-// }),
-// ),
-// ),
