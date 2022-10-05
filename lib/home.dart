@@ -206,48 +206,152 @@ class _MyHomePageState extends State<MyHomePage> {
                          child: Container(
                             child: Image.file(
                                 image2!,
-                                fit: BoxFit.scaleDown
-                            ),
-                          ),
-                       ) else Container(
-                          child: Center(
-                            child: Image.file(
-                                image2!,
                                 fit: BoxFit.contain
                             ),
                           ),
-                        ),
+                       ) else Center(
+                         child: Image.file(
+                             image2!,
+                             fit: BoxFit.contain
+                         ),
+                       ),
                         SizedBox(height: 10),
-                        pickedDate == null ? Container(
-                          child: Text(""),
-                        ) : Text("$pickedDate"),
-                        pickedMake != null ? Container(
-                          child: Text("$pickedMaker $pickedMake"),
-                        ) : Container(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                pickedDate == "null" ? Container(
+                                  child: Text(""),
+                                ) : Text("$pickedDate", style: TextStyle(fontSize: 10),),
+                                pickedMake != "null" ? Container(
+                                  child: Text("$pickedMake", style: TextStyle(fontSize: 12),),
+                                ) : Container(),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                if (pickedMaker == "SONY") Container(
+                                  width: 50,
+                                  child: Image.asset(
+                                    'images/sony.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                if (pickedMaker == "NIKON CORPORATION") Container(
+                                  width: 50,
+                                  child: Image.asset(
+                                    'images/Nikon.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                if (pickedMaker == "Canon") Container(
+                                  width: 50,
+                                  child: Image.asset(
+                                    'images/Canon.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                if (pickedMaker == "Apple") Container(
+                                  width: 50,
+                                  child: Image.asset(
+                                    'images/apple.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                if (pickedMaker == "Panasonic") Container(
+                                  width: 50,
+                                  child: Image.asset(
+                                    'images/Panasonic.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                                else Container(),
+                                SizedBox(width: 10),
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(width: 10),
+                                        pickedShutter == "null" ? Container(
+                                          child: Text(""),
+                                        ) : Text("$pickedShutter""ss", style: TextStyle(fontSize: 12),),
+                                        SizedBox(width: 10,),
+                                        pickedF == "null" ? Container(
+                                          child: Text(""),
+                                        ) : Text("f$pickedF", style: TextStyle(fontSize: 12),),
+                                        SizedBox(width: 10,),
+                                        pickedISO == "null" ? Container(
+                                          child: Text(""),
+                                        ) : Text("iso$pickedISO", style: TextStyle(fontSize: 12),),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        pickedLens == "null" || pickedMaker == "Apple"? Container(
+                                          child: Text(""),
+                                        )
+                                            :
+                                        Text("$pickedLens", style: TextStyle(fontSize: 12),),
+                                        SizedBox(width: 6,),
+                                        pickedFocal == "null" ? Container(
+                                          child: Text(""),
+                                        ) : Text("$pickedFocal""mm", style: TextStyle(fontSize: 12),),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
 
-                        if (pickedMaker == "SONY") Container(
-                          width: 70,
-                          child: Image.asset(
-                              'images/sony.png',
-                              fit: BoxFit.cover,
-                          ),
-                        ) else Container(),
+                            // Row(
+                            //   children: [
+                            //     pickedShutter == "null" ? Container(
+                            //       child: Text(""),
+                            //     ) : Text("$pickedShutter"),
+                            //     pickedF == "null" ? Container(
+                            //       child: Text(""),
+                            //     ) : Text("f $pickedF"),
+                            //     pickedISO == "null" ? Container(
+                            //       child: Text(""),
+                            //     ) : Text("iso $pickedISO"),
+                            //   ],
+                            // )
+                          ],
+                        ),
 
-                        pickedFocal == null ? Container(
-                          child: Text(""),
-                        ) : Text("$pickedFocal mm"),
-                        pickedShutter == null ? Container(
-                          child: Text(""),
-                        ) : Text("$pickedShutter"),
-                        pickedF == null ? Container(
-                          child: Text(""),
-                        ) : Text("f $pickedF"),
-                        pickedISO == null ? Container(
-                          child: Text(""),
-                        ) : Text("iso $pickedISO"),
-                        if (pickedLens.isEmpty) Container(
-                          child: Text(""),
-                        ) else Text("$pickedLens"),
+                        // if (pickedMaker == "SONY") Container(
+                        //   width: 70,
+                        //   child: Image.asset(
+                        //       'images/sony.png',
+                        //       fit: BoxFit.cover,
+                        //   ),
+                        // ) else Container(),
+
+                        // Row(
+                        //   children: [
+                        //     // pickedShutter == "null" ? Container(
+                        //     //   child: Text(""),
+                        //     // ) : Text("$pickedShutter"),
+                        //     // pickedF == "null" ? Container(
+                        //     //   child: Text(""),
+                        //     // ) : Text("f $pickedF"),
+                        //     // pickedISO == "null" ? Container(
+                        //     //   child: Text(""),
+                        //     // ) : Text("iso $pickedISO"),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     pickedFocal == "null" ? Container(
+                        //       child: Text(""),
+                        //     ) : Text("$pickedFocal mm"),
+                        //     pickedLens == "null" ? Container(
+                        //       child: Text(""),
+                        //     ) : Text("$pickedLens"),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
