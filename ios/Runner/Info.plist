@@ -58,6 +58,6 @@
     <key>LSSupportsOpeningDocumentsInPlace</key>
     <true/>
     <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>ライブラリに保存するよ</string>
+    <string>ライブラリに保存</string>
 </dict>
 </plist>

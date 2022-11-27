@@ -40,11 +40,9 @@ class SecondScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
-          constraints: BoxConstraints(maxHeight: size.width, maxWidth: size.width),
+          // constraints: BoxConstraints(maxHeight: size.width, maxWidth: size.width),
           child: Image.memory(
             imageData,
-            width: size.width,
-            height: size.height,
             fit: BoxFit.cover,
           ),
         ),
