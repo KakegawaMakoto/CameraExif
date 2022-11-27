@@ -284,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if (image != null) RepaintBoundary(
               key: _globalKey,
               child: Container(
-                color: Colors.white70,
+                color: Colors.white,
                 child: AspectRatio(
                   aspectRatio: 4 / 5,
                   child: Padding(
