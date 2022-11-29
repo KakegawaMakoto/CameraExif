@@ -254,32 +254,44 @@ class _MyHomePageState extends State<MyHomePage> {
 
       ),
       backgroundColor: Colors.white60,
-      body: Center(
+      body:  Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //呼び出しボタン
-            image == null ? ElevatedButton(
-                onPressed: () {
-                  getImageFromCamera();
-                },
-                child: const Text('カメラから画像を取得')
-            )
-            : Text(""),
-            // const SizedBox(height: 5),
-            //呼び出しボタン
-            image == null ? ElevatedButton(
+            // image == null ?  Container(
+            //   margin: EdgeInsets.only(bottom: 50.0,),
+            //   child: FloatingActionButton.extended(
+            //     onPressed: getImageFromGallery,
+            //     label: Text("Add"),
+            //     icon: Icon(Icons.add),
+            //     backgroundColor: Colors.white,
+            //   ),
+            // ) : Container(),
+            // image == null ? ElevatedButton(
+            //     onPressed: () {
+            //       getImageFromCamera();
+            //     },
+            //     child: const Text('カメラから画像を取得')
+            // )
+            // : Text(""),
+            // // const SizedBox(height: 5),
+            // //呼び出しボタン
+            image == null ? ElevatedButton.icon(
+              icon: Icon(Icons.image),
+              label: Text("Select Image"),
+                style: ElevatedButton.styleFrom(primary: Colors.white,onPrimary: Colors.black),
                 onPressed: () {
                   getImageFromGallery();
                 },
-                child: const Text('アルバムから画像を取得')
+                //child: const Text('アルバムから画像を取得')
             )
             : Container(),
-            // const SizedBox(height: 5),
-            //取得した画像を表示
-             image == null ? const Text('画像が選択されてません') : Container(
-              // child: Expanded(flex:1,child: Image.file(image, fit: BoxFit.cover)),
-            ),
+            // // const SizedBox(height: 5),
+            // //取得した画像を表示
+            //  image == null ? const Text('画像が選択されてません') : Container(
+            //   // child: Expanded(flex:1,child: Image.file(image, fit: BoxFit.cover)),
+            // ),
             // SizedBox(height: 10,),
             if (image != null) RepaintBoundary(
               key: _globalKey,
@@ -424,6 +436,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      // floatingActionButton: image == null ?  Container(
+      //   margin: EdgeInsets.only(bottom: 50.0,),
+      //   child: FloatingActionButton.extended(
+      //       onPressed: getImageFromGallery,
+      //       label: Text("Add"),
+      //       icon: Icon(Icons.add),
+      //   ),
+      // ) : Container()
     );
   }
 }
